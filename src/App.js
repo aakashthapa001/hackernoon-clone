@@ -17,6 +17,14 @@ const list = [
     num_comments: 2,
     points: 5,
     objectID: 1
+  },
+  {
+    title: 'freeCodeCamp',
+    url: 'https://github.com/freeCodeCamp/freeCodeCamp',
+    author: 'freeCodeCamp',
+    num_comments: 1200,
+    points: 5000,
+    objectID: 2
   }
 ];
 
@@ -52,13 +60,19 @@ class App extends Component {
   }
 
   render() {
+    const { searchTerm, list } = this.state;
+
     return (
       <div className="App">
         <form>
-          <input type="text" onChange={this.onSearchChange} />
+          <input 
+            type="text"
+            value={searchTerm}
+            onChange={this.onSearchChange} 
+          />
         </form>
 
-        {this.state.list.filter(isSearched(this.state.searchTerm)).map(item =>
+        {list.filter(isSearched(searchTerm)).map(item =>
           <div key={item.objectID} className="row">
             <span>
               <a href={item.url}>
