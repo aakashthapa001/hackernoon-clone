@@ -31,25 +31,12 @@ class App extends Component {
     this.fetchSearchTopstories(searchTerm);
   }
 
-  setSearchTopstories(result) {
-    this.setState({ result });
-  }
-
   fetchSearchTopstories(searchTerm) {
     fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
       .then(response => response.json())
       .then(result => this.setSearchTopstories(result));
-  }  
-
-  handleDismiss(id) {
-    const isNotId = item => item.objectID !== id;
-    const updatedHits = this.state.result.hits.filter(isNotId);
-
-    this.setState({
-      result: { ...this.state.result, hits: updatedHits }
-    });
   }
-
+  
   handleSearchChange(event) {
     this.setState({
       searchTerm: event.target.value
@@ -60,6 +47,19 @@ class App extends Component {
     const { searchTerm } = this.state;
     this.fetchSearchTopstories(searchTerm);
     event.preventDefault();
+  }
+
+  setSearchTopstories(result) {
+    this.setState({ result });
+  } 
+
+  handleDismiss(id) {
+    const isNotId = item => item.objectID !== id;
+    const updatedHits = this.state.result.hits.filter(isNotId);
+
+    this.setState({
+      list: { ...this.state.result, hits: updatedHits }
+    });
   }
 
   render() {
@@ -73,7 +73,7 @@ class App extends Component {
           <Search 
             value={searchTerm}
             onChange={this.handleSearchChange}
-            onSubmit={this.handleSearchSubmit}
+            onSubmut={this.handleSearchSubmit}
           >
             Search
           </Search>
@@ -82,27 +82,26 @@ class App extends Component {
         {
           result &&
           <List 
-            list={result.hits}
+            list={result.hits}            
             handleDismiss={this.handleDismiss}
-          />
-        }
-
-                
+          />  
+        }              
       </div>
     );
   }
 }
 
-const Search = ({ value, 
-  onChange, 
-  onSubmit, 
+const Search = ({ 
+  value, 
+  onChange,
+  onSubmit,
   children 
 }) =>
-  <form>
+  <form onSubmit={onSubmit}>
     {children} <input 
       type="text"
       value={value}
-      onChange={onChange}
+      onChange={onChange}      
     />
     <button type="submit">
       {children}
