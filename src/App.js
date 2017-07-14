@@ -68,7 +68,9 @@ class App extends Component {
         <Search 
           value={searchTerm}
           onChange={this.handleSearchChange}
-        />
+        >
+          Search
+        </Search>
         <List 
           list={list}
           pattern={searchTerm}
@@ -82,11 +84,11 @@ class App extends Component {
 
 class Search extends Component {
   render() {
-    const { value, onChange } = this.props;
+    const { value, onChange, children } = this.props;
 
     return (
       <form>
-        <input 
+        {children} <input 
           type="text"
           value={value}
           onChange={onChange}
@@ -119,13 +121,33 @@ class List extends Component {
               {item.points}
             </span>
             <span>
-              <button onClick={() => handleDismiss(item.objectID)}>
+              <Button onClick={() => handleDismiss(item.objectID)}>
                 Dismiss
-              </button>
+              </Button>
             </span>
           </div>
         )}
       </div>
+    )
+  }
+}
+
+class Button extends Component {
+  render() {
+    const {
+      onClick,
+      className = '',
+      children,
+    } = this.props;
+
+    return (
+      <button
+        onClick={onClick}
+        className={className}
+        type="button"
+      >
+        {children}
+      </button>
     )
   }
 }
