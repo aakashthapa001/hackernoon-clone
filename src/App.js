@@ -40,11 +40,11 @@ class App extends Component {
       searchTerm: ''
     };
 
-    this.onDismiss = this.onDismiss.bind(this);
-    this.onSearchChange = this.onSearchChange.bind(this);
+    this.handleDismiss = this.handleDismiss.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
   }
 
-  onDismiss(id) {
+  handleDismiss(id) {
     const isNotId = item => item.objectID !== id;
     const updatedList = this.state.list.filter(isNotId);
 
@@ -53,7 +53,7 @@ class App extends Component {
     });
   }
 
-  onSearchChange(event) {
+  handleSearchChange(event) {
     this.setState({
       searchTerm: event.target.value
     });
@@ -64,15 +64,45 @@ class App extends Component {
 
     return (
       <div className="App">
-        <form>
-          <input 
-            type="text"
-            value={searchTerm}
-            onChange={this.onSearchChange} 
-          />
-        </form>
 
-        {list.filter(isSearched(searchTerm)).map(item =>
+        <Search 
+          value={searchTerm}
+          onChange={this.handleSearchChange}
+        />
+        <List 
+          list={list}
+          pattern={searchTerm}
+          handleDismiss={this.handleDismiss}
+        />
+        
+      </div>
+    );
+  }
+}
+
+class Search extends Component {
+  render() {
+    const { value, onChange } = this.props;
+
+    return (
+      <form>
+        <input 
+          type="text"
+          value={value}
+          onChange={onChange}
+        />
+      </form>
+    )
+  }
+}
+
+class List extends Component {
+  render() {
+    const { list, pattern, handleDismiss } = this.props;
+
+    return (
+      <div>
+        {list.filter(isSearched(pattern)).map(item =>
           <div key={item.objectID} className="row">
             <span>
               <a href={item.url}>
@@ -89,14 +119,14 @@ class App extends Component {
               {item.points}
             </span>
             <span>
-              <button onClick={() => this.onDismiss(item.objectID)}>
+              <button onClick={() => handleDismiss(item.objectID)}>
                 Dismiss
               </button>
             </span>
           </div>
         )}
       </div>
-    );
+    )
   }
 }
 
