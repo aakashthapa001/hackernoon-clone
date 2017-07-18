@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../Button';
+import PropTypes from 'prop-types';
 
 const List = ({ list, handleDismiss }) =>
   <div className="list">
@@ -30,5 +31,10 @@ const List = ({ list, handleDismiss }) =>
       </div>
     )}
   </div>
+
+List.propTypes = {
+  list: PropTypes.array.isRequired,
+  handleDismiss: PropTypes.func.isRequired,
+};
 
 export default List;
